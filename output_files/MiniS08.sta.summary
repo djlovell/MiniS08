@@ -1,0 +1,101 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow Model Setup 'S08clk'
+Slack : -13.970
+TNS   : -649.590
+
+Type  : Slow Model Setup 'clk50'
+Slack : -10.208
+TNS   : -465.170
+
+Type  : Slow Model Setup 'sci:S08sci|baudgen[10]'
+Slack : -1.556
+TNS   : -17.373
+
+Type  : Slow Model Setup 'sci:S08sci|baudgen[12]'
+Slack : -0.940
+TNS   : -9.532
+
+Type  : Slow Model Hold 'clk50'
+Slack : -1.689
+TNS   : -8.395
+
+Type  : Slow Model Hold 'S08clk'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Hold 'sci:S08sci|baudgen[10]'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Hold 'sci:S08sci|baudgen[12]'
+Slack : 0.391
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'clk50'
+Slack : -2.000
+TNS   : -219.300
+
+Type  : Slow Model Minimum Pulse Width 'S08clk'
+Slack : -0.500
+TNS   : -60.000
+
+Type  : Slow Model Minimum Pulse Width 'sci:S08sci|baudgen[10]'
+Slack : -0.500
+TNS   : -14.000
+
+Type  : Slow Model Minimum Pulse Width 'sci:S08sci|baudgen[12]'
+Slack : -0.500
+TNS   : -13.000
+
+Type  : Fast Model Setup 'S08clk'
+Slack : -5.578
+TNS   : -254.838
+
+Type  : Fast Model Setup 'clk50'
+Slack : -3.825
+TNS   : -161.072
+
+Type  : Fast Model Setup 'sci:S08sci|baudgen[10]'
+Slack : -0.266
+TNS   : -1.755
+
+Type  : Fast Model Setup 'sci:S08sci|baudgen[12]'
+Slack : 0.086
+TNS   : 0.000
+
+Type  : Fast Model Hold 'clk50'
+Slack : -1.246
+TNS   : -6.203
+
+Type  : Fast Model Hold 'S08clk'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Hold 'sci:S08sci|baudgen[10]'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Hold 'sci:S08sci|baudgen[12]'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'clk50'
+Slack : -2.000
+TNS   : -219.300
+
+Type  : Fast Model Minimum Pulse Width 'S08clk'
+Slack : -0.500
+TNS   : -60.000
+
+Type  : Fast Model Minimum Pulse Width 'sci:S08sci|baudgen[10]'
+Slack : -0.500
+TNS   : -14.000
+
+Type  : Fast Model Minimum Pulse Width 'sci:S08sci|baudgen[12]'
+Slack : -0.500
+TNS   : -13.000
+
+------------------------------------------------------------

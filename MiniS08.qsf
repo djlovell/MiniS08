@@ -1,0 +1,125 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2013 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II 64-Bit
+# Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+# Date created = 14:50:33  October 17, 2017
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		MiniS08_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone II"
+set_global_assignment -name DEVICE EP2C35F672C6
+set_global_assignment -name TOP_LEVEL_ENTITY MiniS08
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "14:50:33  OCTOBER 17, 2017"
+set_global_assignment -name LAST_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name VERILOG_FILE S08rom.v
+set_global_assignment -name VERILOG_FILE S08ram.v
+set_global_assignment -name VERILOG_FILE 10_22_Postings/MiniS08.v
+set_global_assignment -name VERILOG_FILE 10_22_Postings/sci.v
+set_location_assignment PIN_L3 -to IRout[13]
+set_location_assignment PIN_L2 -to IRout[12]
+set_location_assignment PIN_L9 -to IRout[11]
+set_location_assignment PIN_L6 -to IRout[10]
+set_location_assignment PIN_L7 -to IRout[9]
+set_location_assignment PIN_P9 -to IRout[8]
+set_location_assignment PIN_N9 -to IRout[7]
+set_location_assignment PIN_R2 -to IRout[6]
+set_location_assignment PIN_P4 -to IRout[5]
+set_location_assignment PIN_P3 -to IRout[4]
+set_location_assignment PIN_M2 -to IRout[3]
+set_location_assignment PIN_M3 -to IRout[2]
+set_location_assignment PIN_M5 -to IRout[1]
+set_location_assignment PIN_M4 -to IRout[0]
+set_location_assignment PIN_AB23 -to addr[20]
+set_location_assignment PIN_V22 -to addr[19]
+set_location_assignment PIN_AC25 -to addr[18]
+set_location_assignment PIN_AC26 -to addr[17]
+set_location_assignment PIN_AB26 -to addr[16]
+set_location_assignment PIN_AB25 -to addr[15]
+set_location_assignment PIN_Y24 -to addr[14]
+set_location_assignment PIN_V20 -to addr[13]
+set_location_assignment PIN_V21 -to addr[12]
+set_location_assignment PIN_W21 -to addr[11]
+set_location_assignment PIN_Y22 -to addr[10]
+set_location_assignment PIN_AA24 -to addr[9]
+set_location_assignment PIN_AA23 -to addr[8]
+set_location_assignment PIN_AB24 -to addr[7]
+set_location_assignment PIN_AF10 -to addr[6]
+set_location_assignment PIN_AB12 -to addr[5]
+set_location_assignment PIN_AC12 -to addr[4]
+set_location_assignment PIN_AD11 -to addr[3]
+set_location_assignment PIN_AE11 -to addr[2]
+set_location_assignment PIN_V14 -to addr[1]
+set_location_assignment PIN_V13 -to addr[0]
+set_location_assignment PIN_N2 -to clk50
+set_location_assignment PIN_Y18 -to clkdisp
+set_location_assignment PIN_P25 -to clksel[2]
+set_location_assignment PIN_N26 -to clksel[1]
+set_location_assignment PIN_N25 -to clksel[0]
+set_location_assignment PIN_T2 -to data[13]
+set_location_assignment PIN_P6 -to data[12]
+set_location_assignment PIN_P7 -to data[11]
+set_location_assignment PIN_T9 -to data[10]
+set_location_assignment PIN_R5 -to data[9]
+set_location_assignment PIN_R4 -to data[8]
+set_location_assignment PIN_R3 -to data[7]
+set_location_assignment PIN_U9 -to data[6]
+set_location_assignment PIN_U1 -to data[5]
+set_location_assignment PIN_U2 -to data[4]
+set_location_assignment PIN_T4 -to data[3]
+set_location_assignment PIN_R7 -to data[2]
+set_location_assignment PIN_R6 -to data[1]
+set_location_assignment PIN_T3 -to data[0]
+set_location_assignment PIN_G26 -to pbin
+set_location_assignment PIN_W26 -to resetin
+set_location_assignment PIN_C25 -to rxd
+set_location_assignment PIN_Y23 -to stateout[6]
+set_location_assignment PIN_AA25 -to stateout[5]
+set_location_assignment PIN_AA26 -to stateout[4]
+set_location_assignment PIN_Y26 -to stateout[3]
+set_location_assignment PIN_Y25 -to stateout[2]
+set_location_assignment PIN_U22 -to stateout[1]
+set_location_assignment PIN_W24 -to stateout[0]
+set_location_assignment PIN_B25 -to txd
+set_location_assignment PIN_AD12 -to debugOut
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

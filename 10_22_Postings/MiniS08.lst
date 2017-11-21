@@ -1,0 +1,261 @@
+
+Freescale HC08-Assembler 
+(c) Copyright Freescale 1987-2009
+
+ Abs. Rel.   Loc  Obj. code   Source line
+ ---- ----   --------------   -----------
+    1    1                    ;            include 'mc9s08qg8.inc'
+    2    2                    ;*******************************************************************
+    3    3                    ; Test program for the MiniS08 designed in ECE 643
+    4    4                    ;*******************************************************************
+    5    5                    
+    6    6        0000 0004   scistatus   equ   4
+    7    7        0000 0080   TDREmask    equ   %10000000
+    8    8        0000 0001   RDRFmask    equ   %00000001
+    9    9        0000 0005   scidatain   equ   5
+   10   10        0000 0006   scidataout  equ   6
+   11   11                    ;scistatus   equ   SCIS1
+   12   12                    ;TDREmask    equ   mSCIS1_TDRE
+   13   13                    ;RDRFmask    equ   mSCIS1_RDRF
+   14   14                    ;scidatain   equ   SCID
+   15   15                    ;scidataout  equ   SCID
+   16   16                    
+   17   17                                org   8
+   18   18                    ;            org   $60
+   19   19                                
+   20   20  a0008             temp        ds.b  1
+   21   21  a0009             name        ds.b  30
+   22   22  a0027             dummy       ds.b  1
+   23   23                    
+   24   24                                org   $100
+   25   25                    ;            org   $e000
+   26   26  a0100 CC 017E                 jmp   main
+   27   27                             
+   28   28  a0103 0D0A 4865   startmsg    dc.b  13,10,"Hello world, I'm a MiniS08!",0
+             0107 6C6C 6F20  
+             010B 776F 726C  
+             010F 642C 2049  
+             0113 276D 2061  
+             0117 204D 696E  
+             011B 6953 3038  
+             011F 2100       
+   29   29  a0121 0D0A 506C   requestname dc.b  13,10,"Please enter your name: ",0
+             0125 6561 7365  
+             0129 2065 6E74  
+             012D 6572 2079  
+             0131 6F75 7220  
+             0135 6E61 6D65  
+             0139 3A20 00    
+   30   30  a013C 0D0A 4865   prompt      dc.b  13,10,"Hello ",0
+             0140 6C6C 6F20  
+             0144 00         
+   31   31  a0145 2C20 706C   prompt2     dc.b  ", please enter a hexadecimal digit: ",0
+             0149 6561 7365  
+             014D 2065 6E74  
+             0151 6572 2061  
+             0155 2068 6578  
+             0159 6164 6563  
+             015D 696D 616C  
+             0161 2064 6967  
+             0165 6974 3A20  
+             0169 00         
+   32   32  a016A 0D0A 00     crlf        dc.b  13,10,0
+   33   33  a016D 0D0A 496E   invalidmsg  dc.b  13,10,"Invalid digit ",0
+             0171 7661 6C69  
+             0175 6420 6469  
+             0179 6769 7420  
+             017D 00         
+   34   34                    
+   35   35                    main
+   36   36  a017E A6 25           lda  #'%'
+
+Freescale HC08-Assembler 
+(c) Copyright Freescale 1987-2009
+
+ Abs. Rel.   Loc  Obj. code   Source line
+ ---- ----   --------------   -----------
+   37   37  a0180 B7 27           sta  dummy
+   38   38                    ; lda  NV_ICSTRM
+   39   39                    ; sta  ICSTRM
+   40   40                    ; lda  #$53
+   41   41                    ; sta  SOPT1
+   42   42                    ; mov  #26,SCIBDL
+   43   43                    ; bset SCIC2_TE,SCIC2
+   44   44                    ; bset SCIC2_RE,SCIC2
+   45   45  a0182 CD 024D         jsr  putchr
+   46   46  a0185 48              lsla
+   47   47  a0186 87              psha
+   48   48  a0187 88              pulx
+   49   49  a0188 BF 27           stx  dummy
+   50   50  a018A 87              psha
+   51   51  a018B 8A              pulh
+   52   52  a018C B6 04           lda  scistatus
+   53   53  a018E 87              psha
+   54   54  a018F 8B              pshh
+   55   55  a0190 86              pula
+   56   56  a0191 B7 27           sta  dummy
+   57   57  a0193 8A              pulh
+   58   58  a0194 89              pshx
+   59   59  a0195 8B              pshh
+   60   60  a0196 86              pula
+   61   61  a0197 B7 27           sta  dummy
+   62   62  a0199 88              pulx
+   63   63  a019A A6 C7           lda  #%11000111
+   64   64  a019C 47              asra
+   65   65  a019D B7 27           sta  dummy
+   66   66  a019F 44              lsra
+   67   67  a01A0 B7 27           sta  dummy
+   68   68  a01A2 48              lsla
+   69   69  a01A3 B7 27           sta  dummy
+   70   70  a01A5 AB 55           add  #$55
+   71   71  a01A7 B7 27           sta  dummy
+   72   72  a01A9 AA 0F           ora  #$0f
+   73   73  a01AB B7 27           sta  dummy
+   74   74  a01AD A4 F0           and  #$f0
+   75   75  a01AF B7 27           sta  dummy
+   76   76  a01B1 A8 AA           eor  #$aa
+   77   77  a01B3 B7 27           sta  dummy
+   78   78                        
+   79   79  a01B5 A6 01           lda  #high(startmsg)
+   80   80  a01B7 87              psha
+   81   81  a01B8 8A              pulh
+   82   82  a01B9 AE 03           ldx  #low(startmsg)
+   83   83  a01BB CD 0242         jsr  putstr
+   84   84  a01BE A6 01           lda  #high(requestname)
+   85   85  a01C0 87              psha
+   86   86  a01C1 8A              pulh
+   87   87  a01C2 AE 21           ldx  #low(requestname)
+   88   88  a01C4 CD 0242         jsr  putstr
+   89   89  a01C7 CD 0256         jsr  getname
+   90   90  a01CA A6 01           lda  #high(prompt)
+   91   91  a01CC 87              psha
+   92   92  a01CD 8A              pulh
+   93   93  a01CE AE 3C           ldx  #low(prompt)
+   94   94  a01D0 CD 0242         jsr  putstr
+   95   95                        forever:
+   96   96  a01D3 A6 00              lda  #high(name)
+   97   97  a01D5 87                 psha
+   98   98  a01D6 8A                 pulh
+   99   99  a01D7 AE 09              ldx  #low(name)
+  100  100  a01D9 CD 0242            jsr  putstr
+
+Freescale HC08-Assembler 
+(c) Copyright Freescale 1987-2009
+
+ Abs. Rel.   Loc  Obj. code   Source line
+ ---- ----   --------------   -----------
+  101  101  a01DC A6 01              lda  #high(prompt2)
+  102  102  a01DE 87                 psha
+  103  103  a01DF 8A                 pulh
+  104  104  a01E0 AE 45              ldx  #low(prompt2)
+  105  105  a01E2 CD 0242            jsr  putstr
+  106  106  a01E5 CD 026F            jsr  getchr
+  107  107  a01E8 B7 08              sta  temp
+  108  108  a01EA A0 30              sub  #'0'
+  109  109  a01EC B7 27              sta  dummy
+  110  110  a01EE 2B 47              bmi  invalid        ;br if N=1
+  111  111  a01F0 B6 08              lda  temp
+  112  112  a01F2 A0 3A              sub  #'9'+1
+  113  113  a01F4 B7 27              sta  dummy
+  114  114  a01F6 25 14              bcs  valid          ;br if C=1
+  115  115  a01F8 B6 08              lda  temp
+  116  116  a01FA A0 41              sub  #'A'
+  117  117  a01FC B7 27              sta  dummy
+  118  118  a01FE 2B 37              bmi  invalid
+  119  119  a0200 B6 08              lda  temp
+  120  120  a0202 A4 DF              and  #%11011111     ;convert lower to upper
+  121  121  a0204 B7 08              sta  temp
+  122  122  a0206 A0 47              sub  #'F'+1
+  123  123  a0208 B7 27              sta  dummy
+  124  124  a020A 24 2B              bcc  invalid        ;br if C=0
+  125  125                           valid:
+  126  126  a020C B6 08                 lda  temp
+  127  127  a020E A0 41                 sub  #'A'
+  128  128  a0210 2B 06                 bmi  skip
+  129  129  a0212 B6 08                    lda  temp
+  130  130  a0214 A0 07                    sub  #7
+  131  131  a0216 B7 08                    sta  temp
+  132  132                              skip:  
+  133  133  a0218 B6 08                 lda  temp
+  134  134  a021A A4 0F                 and  #$f
+  135  135                              loop:
+  136  136  a021C B7 08                    sta  temp
+  137  137  a021E 27 0F                    beq  done
+  138  138  a0220 A6 01                    lda  #high(startmsg)
+  139  139  a0222 87                       psha
+  140  140  a0223 8A                       pulh
+  141  141  a0224 AE 03                    ldx  #low(startmsg)
+  142  142  a0226 CD 0242                  jsr  putstr
+  143  143  a0229 B6 08                    lda  temp
+  144  144  a022B A0 01                    sub  #1
+  145  145  a022D 20 ED                    bra  loop
+  146  146                              done:
+  147  147  a022F A6 01                 lda  #high(crlf)
+  148  148  a0231 87                    psha
+  149  149  a0232 8A                    pulh
+  150  150  a0233 AE 6A                 ldx  #low(crlf)
+  151  151  a0235 20 06                 bra  join
+  152  152                           invalid:
+  153  153  a0237 A6 01                 lda  #high(invalidmsg)
+  154  154  a0239 87                    psha
+  155  155  a023A 8A                    pulh
+  156  156  a023B AE 6D                 ldx  #low(invalidmsg)
+  157  157                           join:
+  158  158  a023D CD 0242            jsr  putstr
+  159  159  a0240 20 91              bra  forever
+  160  160                           
+  161  161                    putstr
+  162  162  a0242 F6                  lda  ,x
+  163  163  a0243 27 07               beq  psdone
+  164  164  a0245 CD 024D                jsr  putchr
+
+Freescale HC08-Assembler 
+(c) Copyright Freescale 1987-2009
+
+ Abs. Rel.   Loc  Obj. code   Source line
+ ---- ----   --------------   -----------
+  165  165  a0248 AF 01                  aix  #1
+  166  166  a024A 20 F6                  bra  putstr
+  167  167                            psdone:
+  168  168  a024C 81           rts
+  169  169                            
+  170  170                    putchr
+  171  171  a024D 87                  psha
+  172  172                            wait:
+  173  173  a024E B6 04                  lda  scistatus
+  174  174  a0250 2A FC                  bpl  wait
+  175  175  a0252 86                  pula
+  176  176  a0253 B7 06               sta  scidataout
+  177  177  a0255 81           rts
+  178  178                     
+  179  179                    getname
+  180  180  a0256 A6 00               lda  #0
+  181  181  a0258 87                  psha
+  182  182  a0259 8A                  pulh
+  183  183  a025A AE 09               ldx  #name
+  184  184                            gnloop:
+  185  185  a025C CD 026F                jsr  getchr
+  186  186  a025F 87                     psha
+  187  187  a0260 A0 0D                  sub  #13
+  188  188  a0262 27 06                  beq  gndone
+  189  189  a0264 86                     pula
+  190  190  a0265 F7                     sta  ,x
+  191  191  a0266 AF 01                  aix  #1
+  192  192  a0268 20 F2                  bra  gnloop
+  193  193                            gndone:
+  194  194  a026A 86                  pula
+  195  195  a026B A6 00               lda  #0
+  196  196  a026D F7                  sta  ,x
+  197  197  a026E 81           rts
+  198  198                         
+  199  199                    getchr
+  200  200  a026F B6 04               lda  scistatus
+  201  201  a0271 A4 01               and  #RDRFmask
+  202  202  a0273 27 FA               beq  getchr
+  203  203  a0275 B6 05               lda  scidatain
+  204  204  a0277 B7 06               sta  scidataout
+  205  205  a0279 81           rts    
+  206  206                    
+  207  207                    ;        org  $fffe
+  208  208                    ;        dc.w $e000
+  209  209                        
