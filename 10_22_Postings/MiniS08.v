@@ -10,14 +10,14 @@ output [13:0] IRout;
 output [6:0] stateout;
 wire IMM, IX, INH, REL, DIR, EXT, STK;
 wire ldIR, ldA, oeA, ldHX, oeH, oeX, oeHXad, incSP, decSP, oeSPad, ldMARH, ldMARL, clrMARH, oeMARad, oeMAR;
-wire ldPC, oeIncPCad, oePCH, oePCL, write, read, IOaddr, RAMaddr, ROMaddr;
+wire ldPC, oeIncPCad, oePCH, oePCL, write, read, IOaddr, RAMaddr, ROMaddr, FPUaddr;
 wire modA, stoA, modHX, stoX; 
 wire br, jmp, jsr, rts, ldapula, add, sub, And, ora, eor, lsra, asra, lsla;
 wire psha, pshh, pshx;
 wire lda, ldz, ldx, pula, pulx, pulh, aix;
 wire BCT, bra, bcc, bcs, bpl, bmi, bne, beq, sta, stx; 
 wire N, Z, Co;
-wire [7:0] sciout, RAMout, ROMout; 
+wire [7:0] fpuout, sciout, RAMout, ROMout; 
 wire [9:0] abus; 
 wire [7:0] dbus; 
 wire [7:0] ALU;
@@ -43,6 +43,7 @@ sevenseg IR0(IR[3:0], IRout[6:0]);
 sevenseg ST({1'b0,CPUstate}-1,stateout);
 
 sci S08sci(clk50, dbus, sciout, IOaddr, abus[2:0], read, write, rxd, txd);
+FPU S08fpu(clk50, dbus, fpuout, FPUaddr, abus[2:0], read, write);
 S08ram ram(abus[7:0],clk50,dbus,write&RAMaddr,RAMout);
 S08rom rom(abus,clk50,ROMout);
 
@@ -104,7 +105,7 @@ assign PCLU = br ? (PC+{dbus[7],dbus[7],dbus}+1) : jsr ? MAR : {MAR[9:8],dbus};
 
 assign abus = oeMARad ? MAR : oeHXad ? HX : oeSPad ?  SP : oeIncPCad ? PC : 0;
 assign dbus = oeMAR&oePCH ? PC[9:8] : oeMAR ? MAR : oeA ? A : oeX ? HX[7:0] : oeH ? {6'b0,HX[9:8]} : oePCL ? PC[7:0] : oePCH ? {6'b0,PC[9:8]}
-       : IOaddr&read ? sciout : RAMaddr&read ? RAMout : ROMaddr&read ? ROMout : 0;
+       : IOaddr&read ? sciout : FPUaddr&read ? fpuout : RAMaddr&read ? RAMout : ROMaddr&read ? ROMout : 0;
 		 
 assign ldIR = st0;
 assign ldA = modA&INH&st1  | modA&STK&st2  | modA&IMM&st1  | modA&DIR&st2  | modA&EXT&st3 | modA&IX&st1;
@@ -177,9 +178,10 @@ assign read = st0 			  |
 							jsr&st1       | jsr&st2       |
 							rts&st2       | rts&st3;
 
-assign IOaddr = (abus<'h8);
-assign RAMaddr = ~IOaddr&(abus<'h100);
-assign ROMaddr = ~IOaddr&~RAMaddr;
+assign FPUaddr = (abus<'h4);
+assign IOaddr = ~FPUaddr&(abus<'h8);
+assign RAMaddr = ~FPUaddr&~IOaddr&(abus<'h100);
+assign ROMaddr = ~FPUaddr&~IOaddr&~RAMaddr;
 
 assign modA = lda | pula | add | sub | And | ora | eor | lsra | asra | lsla;
 assign stoA = sta | psha;
