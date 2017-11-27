@@ -54,18 +54,21 @@ assign writevalnegedge = ~writeval & prevwriteval; // neg edge
 // student needs to declare Done, Rneed, Wait, Step, Start, Neg
 //                          A, B, AmB, E, Q, S, DivDone, DivState
 // some are wires others regs, some scalars others vectors
-reg [24:0] A, B, AmB;
+reg [24:0] A, B;
 reg [23:0] Q;
 reg [9:0] E;
 reg S, DivState;
-wire, Done, Rneed, Wait, Step, Start, Neg, DivDone;
+wire [24:0] AmB;
+wire [31:0] R; //quotient
+wire Done, Rneed, Wait, Step, Start, Neg, DivDone;
 
-assign Wait = 
-assign Step = 
+assign Wait = (DivState==0);
+assign Step = (DivState==1);
 assign Start = writecmdposedge&datain==3;
 always @(posedge clk)
    begin
-      DivState <= 
+      DivState <= (Wait&~Start) ? 0 : (Wait&Start) ? 1 :
+						(Step&~Done)  ? 1 : (Step&~Done) ? 0 : DivState;
       S <= 
       A <= 
       B <= 
@@ -74,9 +77,10 @@ always @(posedge clk)
       DivDone <= 
     end
 assign Done = Q[23];
-assign AmB = 
-assign Neg = 
-assign Rneed =
+assign AmB = A[24:0] - B[24:0];
+assign Neg = AmB[24];
+assign Rneed = (A>B) | (A==B)&Q[0];
+assign R = {S,E[7:0],Q[22:0]};
 
 
 // FP Multiply section
