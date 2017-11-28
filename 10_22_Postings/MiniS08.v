@@ -65,7 +65,7 @@ always @(posedge S08clk)
    A <= ldA ? ALU : A;
    HX <= ldHX ? HXLU : HX;
    SP <= reset ? 'hFF : incSP ? SP+1 : decSP ? SP-1 : SP;
-   PC <= reset ? 'h1B5 : ldPC ? PCLU : oeIncPCad ? PC+1 : PC;
+   PC <= reset ? 'h100 : ldPC ? PCLU : oeIncPCad ? PC+1 : PC;
    IR <= ldIR ? dbus : IR;
 
    C <= ldA&(add|sub|lsla|lsra|asra) ? Co : C;
@@ -168,7 +168,7 @@ assign write = stoA&STK&st1  | stoA&DIR&st2  | stoA&EXT&st3  | stoA&IX&st1   |
 							modHX&pshh&st1| modHX&pshx&st1| 
 							stoX&DIR&st2  | stoX&EXT&st3  | stoX&IX&st1   |
 							jsr&st3       | jsr&st4;
-assign read = st0 			  | 
+assign read =  st0 			  		  | 
 							modA&STK&st2  | modA&IMM&st1  | modA&DIR&st1  | modA&DIR&st2  | modA&EXT&st1  | modA&EXT&st2  | modA&EXT&st3  | modA&IX&st1  |
 							stoA&DIR&st1  | stoA&EXT&st1  | stoA&EXT&st2  | 
 							modHX&STK&st2 | modHX&IMM&st1 | modHX&DIR&st1 | modHX&DIR&st2 | modHX&EXT&st1 | modHX&EXT&st2 | modHX&EXT&st3 | modHX&IX&st1 |
