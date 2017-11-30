@@ -66,13 +66,30 @@ assign Step = (DivState==1);
 assign Start = writecmdposedge&datain==3;
 always @(posedge clk)
    begin
-      DivState <= (Wait&~Start) ? 0 : (Wait&Start) ? 1 :
-						(Step&~Done)  ? 1 : (Step&Done) ? 0 : DivState;
-      S <= (Wait&~Start) ? 1'b0  : (Wait&Start) ? (X[31]^Y[31]) : S;
-      A <= (Wait&~Start) ? 25'b0 : (Wait&Start) ? {1'b0,1'b1,Y[22:0]} : (Step&~Neg) ? {AmB[23:0],1'b0} : (Step&Neg) ? {A[23:0],1'b0} : A;
-      B <= (Wait&~Start) ? 25'b0 : (Wait&Start) ? {1'b0,1'b1,X[22:0]} : B;
-      E <= (Wait&~Start) ? 10'b0 : (Wait&Start) ? (Y[30:23]-X[30:23]+127+24) : Step&~Done ? (E-1) : E;
-      Q <= Wait ? 24'b0 : (Step&~Done) ? {Q[22:0],~Neg} : (Step&Done) ? (Q[23:0]+Rneed) : Q; 
+      DivState <= (Wait&~Start) ? 0 
+								: (Wait&Start) ? 1 
+								: (Step&~Done) ? 1 
+								: (Step&Done) ? 0 
+								: DivState;
+      S 			<= (Wait&~Start) ? 1'b0  
+								: (Wait&Start) ? (X[31]^Y[31]) 
+								: S;
+      A 			<= (Wait&~Start) ? 25'b0 
+								: (Wait&Start) ? {1'b0,1'b1,Y[22:0]} 
+								: (Step&~Neg) ? {AmB[23:0],1'b0} 
+								: (Step&Neg) ? {A[23:0],1'b0} 
+								: A;
+      B 			<= (Wait&~Start) ? 25'b0 
+								: (Wait&Start) ? {1'b0,1'b1,X[22:0]} 
+								: B;
+      E 			<= (Wait&~Start) ? 10'b0 
+								: (Wait&Start) ? (Y[30:23]-X[30:23]+127+24) 
+								: Step&~Done ? (E-1) 
+								: E;
+      Q 			<= Wait ? 24'b0 
+								: (Step&~Done) ? {Q[22:0],~Neg} 
+								: (Step&Done) ? (Q[23:0]+Rneed) 
+								: Q; 
       DivDone <= Step&Done;
     end
 assign Done = Q[23];
@@ -96,24 +113,57 @@ reg [1:0] MulState;
 wire mWait, mStep, mShift;
 wire mDone, mRneed, mStart, Sneed;
 
-assign mWait = (MulState==2'b00);
-assign mStep = (MulState==2'b01);
+assign mWait  = (MulState==2'b00);
+assign mStep  = (MulState==2'b01);
 assign mShift = (MulState==2'b10);
 assign mStart = writecmdposedge&datain==4;
+
 always @(posedge clk)
    begin
-      MulState <= (mWait&~mStart) ? 2'b00 : (mWait&mStart) ? 2'b01 : (mStep&~mDone) ? 2'b01 : 
-						(mStep&mDone&~mRneed) ? 2'b00 : (mStep&mDone&mRneed) ? 2'b10 : mShift ? 2'b00 : MulState; 
-      mS <= (mWait&~mStart) ? 0 : (mWait&mStart) ? (X[31]^Y[31]) : mStep ? mS : mShift ? mS : mS;
-      mA <= (mWait&~mStart) ? 25'b0 : (mWait&mStart) ? {1'b1,X[22:0]} : mStep ? {1'b0,mA[23:1]} : mA;
-      mB <= (mWait&~mStart) ? 25'b0 : (mWait&mStart) ? {1'b1,Y[22:0]} : mStep ? mB : mB;
-      mE <= (mWait&~mStart) ? 10'b0 : (mWait&mStart) ? (Y[30:23]+X[30:23]-127-25) : (mStep&~mDone) ? (mE+1) : 
-				(mStep&mDone) ? mE : (mShift&~Sneed) ? mE : (mShift&Sneed) ? (mE+1) : mE;
-      P  <= mWait ? 26'b0 : (mStep&~mDone) ? {1'b0,P[24:1]} + {1'b0,{24{mA[0]}}&mB} : (mStep&mDone&~Rneed) ? P : 
-				(mStep&mDone&Rneed) ? (P+1) : (mShift&~Sneed) ? P : (mShift&Sneed) ? {1'b0,P[24:1]} : P;
-      MulDone <= (mWait&~mStart) ? 0 : (mStep&mDone&~Rneed) ? 1 : mShift ? 1 : MulDone;
-      Round   <= (mWait&~mStart) ? 0 : mStep ? P[0] : Round;
-      SBit    <= mWait? 0 : mStep ? SBit|Round : SBit;
+      MulState <= (mWait&~mStart) ? 2'b00 
+								: (mWait&mStart) ? 2'b01 
+								: (mStep&~mDone) ? 2'b01 
+								: (mStep&mDone&~mRneed) ? 2'b00 
+								: (mStep&mDone&mRneed) ? 2'b10 
+								: mShift ? 2'b00 
+								: MulState; 
+      mS 		<= (mWait&~mStart) ? 0 
+								: (mWait&mStart) ? (X[31]^Y[31]) 
+								: mStep ? mS 
+								: mShift ? mS 
+								: mS;
+      mA 		<= (mWait&~mStart) ? 25'b0 
+								: (mWait&mStart) ? {1'b1,X[22:0]} 
+								: mStep ? {1'b0,mA[23:1]} 
+								: mA;
+      mB 		<= (mWait&~mStart) ? 25'b0 
+								: (mWait&mStart) ? {1'b1,Y[22:0]} 
+								: mStep ? mB 
+								: mB;
+      mE 		<= (mWait&~mStart) ? 10'b0 
+								: (mWait&mStart) ? (Y[30:23]+X[30:23]-127-25) 
+								: (mStep&~mDone) ? (mE+1) 
+								: (mStep&mDone) ? mE 
+								: (mShift&~Sneed) ? mE 
+								: (mShift&Sneed) ? (mE+1) 
+								: mE;
+      P  		<= mWait ? 26'b0 
+								: (mStep&~mDone) ? {1'b0,P[24:1]} + {1'b0,{24{mA[0]}}&mB} 
+								: (mStep&mDone&~Rneed) ? P 
+								: (mStep&mDone&Rneed) ? (P+1) 
+								: (mShift&~Sneed) ? P 
+								: (mShift&Sneed) ? {1'b0,P[24:1]} 
+								: P;
+      MulDone 	<= (mWait&~mStart) ? 0 
+								: (mStep&mDone&~Rneed) ? 1 
+								: mShift ? 1 
+								: MulDone;
+      Round   	<= (mWait&~mStart) ? 0 
+								: mStep ? P[0] 
+								: Round;
+      SBit     <= mWait? 0 
+								: mStep ? SBit|Round 
+								: SBit;
    end
 assign mDone = (A==0)&~P[24];
 assign mRneed = Round&SBit | P[0]&Round&~SBit; 

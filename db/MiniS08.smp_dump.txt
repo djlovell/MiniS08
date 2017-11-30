@@ -1,6 +1,0 @@
-
-State Machine - |MiniS08|FPU:S08fpu|MulState
-Name MulState.00 MulState.10 MulState.01 
-MulState.00 0 0 0 
-MulState.01 1 0 1 
-MulState.10 1 1 0 
