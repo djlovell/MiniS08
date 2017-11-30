@@ -105,8 +105,8 @@ assign Rneed = (A>B) | (A==B)&Q[0];
 // student needs to declare mDone, mRneed, mWait, mStep, mShift, mStart, Sneed,
 //                          mA, mB, mE, P, mS, MulDone, MulState, Round, SBit
 // some are wires others regs, some scalors others vectors
-reg [24:0] mA, mB;
-reg [25:0] P;
+reg [23:0] mA, mB;
+reg [24:0] P;
 reg [9:0] mE;
 reg mS, MulDone, Round, SBit;
 reg [1:0] MulState;
@@ -132,30 +132,31 @@ always @(posedge clk)
 								: mStep 			  			? mS 
 								: mShift 		  			? mS 
 								: mS;
-      mA 		<= (mWait&~mStart) 					? 25'b0 
+      mA 		<= (mWait&~mStart) 					? 24'b0 
 								: (mWait&mStart) 			? {1'b1,X[22:0]} 
 								: mStep 						? {1'b0,mA[23:1]} 
 								: mA;
-      mB 		<= (mWait&~mStart) 					? 25'b0 
+      mB 		<= (mWait&~mStart) 					? 24'b0 
 								: (mWait&mStart) 			? {1'b1,Y[22:0]} 
 								: mStep 						? mB 
 								: mB;
       mE 		<= (mWait&~mStart) 					? 10'b0 
-								: (mWait&mStart) 			? (Y[30:23]+X[30:23]-127-25) 
+								: (mWait&mStart) 			? (Y[30:23]+X[30:23]-127-24) 
 								: (mStep&~mDone) 			? (mE+1) 
 								: (mStep&mDone) 			? mE 
 								: (mShift&~Sneed) 		? mE 
 								: (mShift&Sneed) 			? (mE+1) 
 								: mE;
-      P  		<= mWait ? 26'b0 
+      P  		<= (mWait&~mStart) 					? 25'b0 
+								: (mWait&mStart)			? 25'b0
 								: (mStep&~mDone) 			? {1'b0,P[24:1]} + {1'b0,{24{mA[0]}}&mB} 
-								: (mStep&mDone&~Rneed) 	? P 
-								: (mStep&mDone&Rneed) 	? (P+1) 
+								: (mStep&mDone&~mRneed) ? P 
+								: (mStep&mDone&mRneed) 	? (P+1) 
 								: (mShift&~Sneed) 		? P 
 								: (mShift&Sneed) 			? {1'b0,P[24:1]} 
 								: P;
       MulDone 	<= (mWait&~mStart) 					? 0 
-								: (mStep&mDone&~Rneed) 	? 1 
+								: (mStep&mDone&~mRneed) ? 1 
 								: mShift 					? 1 
 								: MulDone;
       Round   	<= (mWait&~mStart) 					? 0 
