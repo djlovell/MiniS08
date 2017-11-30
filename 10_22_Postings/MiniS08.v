@@ -11,7 +11,7 @@ output [6:0] stateout;
 wire IMM, IX, INH, REL, DIR, EXT, STK;
 wire ldIR, ldA, oeA, ldHX, oeH, oeX, oeHXad, incSP, decSP, oeSPad, ldMARH, ldMARL, clrMARH, oeMARad, oeMAR;
 wire ldPC, oeIncPCad, oePCH, oePCL, write, read, IOaddr, RAMaddr, ROMaddr, FPUaddr;
-wire modA, stoA, modHX, stoX; 
+wire modA, stoA, modHX; 
 wire br, jmp, jsr, rts, ldapula, add, sub, And, ora, eor, lsra, asra, lsla;
 wire psha, pshh, pshx;
 wire lda, ldz, ldx, pula, pulx, pulh, aix;
@@ -155,44 +155,44 @@ assign ldA 			= modA&INH&st1  | modA&STK&st2  | modA&IMM&st1  | modA&DIR&st2  | 
 assign oeA 			= stoA&STK&st1  | stoA&DIR&st2  |
 						  stoA&EXT&st3  | stoA&IX&st1;
 assign ldHX 		= modHX&STK&st2 | modHX&IMM&st1 | modHX&DIR&st2 | modHX&EXT&st3 | modHX&IX&st1;	
-assign oeH 			= modHX&pshh&st1; 
-assign oeX 			= modHX&pshx&st1|
-						  stoX&DIR&st2  | stoX&EXT&st3  | stoX&IX&st1;	
+assign oeH 			= pshh&st1; 
+assign oeX 			= pshx&st1|
+						  stx&DIR&st2  | stx&EXT&st3  | stx&IX&st1;	
 assign oeHXad 		= modA&IX&st1   |
 						  stoA&IX&st1   |
 						  modHX&IX&st1  |
-						  stoX&IX&st1;
+						  stx&IX&st1;
 assign incSP 		= modA&STK&st1  |
 						  modHX&STK&st1 |
 						  rts&st1       | rts&st2;
 assign decSP 		= stoA&STK&st1  |
-						  modHX&pshh&st1| modHX&pshx&st1|
+						  pshh&st1| pshx&st1|
 						  jsr&st3		 | jsr&st4;
 assign oeSPad 		= modA&STK&st2  |
 						  stoA&STK&st1  | 
-						  modHX&STK&st2 | modHX&pshh&st1| modHX&pshx&st1 |
+						  modHX&STK&st2 | pshh&st1| pshx&st1 |
 						  rts&st2       | rts&st3       |
 						  jsr&st3		 | jsr&st4;	
 assign ldMARH 		= modA&EXT&st1  |
 						  stoA&EXT&st1  |
 						  modHX&EXT&st1 |
-						  stoX&EXT&st1  |
+						  stx&EXT&st1  |
 						  jmp&st1		 |
 						  jsr&st1		 |
 						  rts&st2;	
 assign ldMARL 		= modA&DIR&st1  | modA&EXT&st2  |
 						  stoA&DIR&st1  | stoA&EXT&st2  |
 						  modHX&DIR&st1 | modHX&EXT&st2 |
-						  stoX&DIR&st1  | stoX&EXT&st2  |
+						  stx&DIR&st1  | stx&EXT&st2  |
 						  jsr&st2;	
 assign clrMARH 	= modA&DIR&st1  |
 						  stoA&DIR&st1  |
 						  modHX&DIR&st1 |
-						  stoX&DIR&st1;		
+						  stx&DIR&st1;		
 assign oeMARad 	= modA&DIR&st2  | modA&EXT&st3  |
 						  stoA&DIR&st2  | stoA&EXT&st3  |
 						  modHX&DIR&st2 | modHX&EXT&st3 |
-						  stoX&DIR&st2  | stoX&EXT&st3;
+						  stx&DIR&st2  | stx&EXT&st3;
 assign oeMAR 		= jsr&st4;
 assign ldPC 		= br&BCT&st1    |
 						  jmp&st2		 |
@@ -201,21 +201,21 @@ assign ldPC 		= br&BCT&st1    |
 assign oeIncPCad 	= st0 	 		 | modA&IMM&st1  | modA&DIR&st1  | modA&EXT&st1  | modA&EXT&st2 |
 						  stoA&DIR&st1  | stoA&EXT&st1  | stoA&EXT&st2  |
 						  modHX&IMM&st1 | modHX&DIR&st1 | modHX&EXT&st1 | modHX&EXT&st2 |
-						  stoX&DIR&st1  | stoX&EXT&st1  | stoX&EXT&st2  |
+						  stx&DIR&st1  | stx&EXT&st1  | stx&EXT&st2  |
 						  br&st1    	 |
 						  jmp&st1   	 | jmp&st2       |
 						  jsr&st1		 | jsr&st2;	
 assign oePCH 		= jsr&st4;
 assign oePCL 		= jsr&st3;
 assign write 		= stoA&STK&st1  | stoA&DIR&st2  | stoA&EXT&st3  | stoA&IX&st1   |
-						  modHX&pshh&st1| modHX&pshx&st1| 
-						  stoX&DIR&st2  | stoX&EXT&st3  | stoX&IX&st1   |
+						  pshh&st1| pshx&st1| 
+						  stx&DIR&st2  | stx&EXT&st3  | stx&IX&st1   |
 						  jsr&st3       | jsr&st4;
 assign read 		= st0 			 | 
 						  modA&STK&st2  | modA&IMM&st1  | modA&DIR&st1  | modA&DIR&st2  | modA&EXT&st1  | modA&EXT&st2  | modA&EXT&st3  | modA&IX&st1  |
 						  stoA&DIR&st1  | stoA&EXT&st1  | stoA&EXT&st2  | 
 						  modHX&STK&st2 | modHX&IMM&st1 | modHX&DIR&st1 | modHX&DIR&st2 | modHX&EXT&st1 | modHX&EXT&st2 | modHX&EXT&st3 | modHX&IX&st1 |
-						  stoX&DIR&st1  | stoX&EXT&st1  | stoX&EXT&st2  |
+						  stx&DIR&st1  | stx&EXT&st1  | stx&EXT&st2  |
 						  br&BCT&st1    |
 						  jmp&st1       | jmp&st2		  |
 						  jsr&st1       | jsr&st2       |
@@ -229,7 +229,6 @@ assign ROMaddr 	= ~FPUaddr&~IOaddr&~RAMaddr;
 assign modA 		= lda | pula | add | sub | And | ora | eor | lsra | asra | lsla;
 assign stoA 		= sta | psha;
 assign modHX 		= ldx | pulh | pulx | aix;
-assign stoX 		= stx | pshh | pshx;
 assign br 			= REL;
 
 assign jmp 			= (IR=='hCC);

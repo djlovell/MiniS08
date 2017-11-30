@@ -3,24 +3,24 @@ TimeQuest Timing Analyzer Summary
 ------------------------------------------------------------
 
 Type  : Slow Model Setup 'S08clk'
-Slack : -16.064
-TNS   : -729.780
+Slack : -15.908
+TNS   : -730.923
 
 Type  : Slow Model Setup 'clk50'
-Slack : -13.967
-TNS   : -3246.579
+Slack : -13.683
+TNS   : -3340.345
 
 Type  : Slow Model Setup 'sci:S08sci|baudgen[10]'
-Slack : -1.571
-TNS   : -17.820
+Slack : -1.698
+TNS   : -19.305
 
 Type  : Slow Model Setup 'sci:S08sci|baudgen[12]'
-Slack : -1.082
-TNS   : -10.599
+Slack : -0.618
+TNS   : -6.216
 
 Type  : Slow Model Hold 'clk50'
-Slack : -1.721
-TNS   : -6.152
+Slack : -1.733
+TNS   : -6.101
 
 Type  : Slow Model Hold 'S08clk'
 Slack : 0.391
@@ -51,24 +51,24 @@ Slack : -0.500
 TNS   : -13.000
 
 Type  : Fast Model Setup 'S08clk'
-Slack : -6.452
-TNS   : -289.752
+Slack : -6.453
+TNS   : -290.342
 
 Type  : Fast Model Setup 'clk50'
-Slack : -5.579
-TNS   : -1240.803
+Slack : -5.428
+TNS   : -1271.709
 
 Type  : Fast Model Setup 'sci:S08sci|baudgen[10]'
-Slack : -0.267
-TNS   : -1.950
+Slack : -0.322
+TNS   : -2.504
 
 Type  : Fast Model Setup 'sci:S08sci|baudgen[12]'
-Slack : 0.005
+Slack : 0.228
 TNS   : 0.000
 
 Type  : Fast Model Hold 'clk50'
-Slack : -1.272
-TNS   : -5.285
+Slack : -1.277
+TNS   : -5.263
 
 Type  : Fast Model Hold 'S08clk'
 Slack : 0.215

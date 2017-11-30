@@ -90,8 +90,8 @@ always @(posedge clk)
 								: (Step&~Done) 	? {Q[22:0],~Neg} 
 								: (Step&Done) 		? (Q[23:0]+Rneed) 
 								: Q; 
-      DivDone 	<= Step&Done;
-    end
+      DivDone 	<= (Step&Done);
+   end
 assign Done = Q[23];
 assign AmB = A[24:0] - B[24:0];
 assign Neg = AmB[24];
@@ -113,19 +113,19 @@ reg [1:0] MulState;
 wire mWait, mStep, mShift;
 wire mDone, mRneed, mStart, Sneed;
 
-assign mWait  = (MulState==2'b00);
-assign mStep  = (MulState==2'b01);
-assign mShift = (MulState==2'b10);
+assign mWait  = (MulState==0);
+assign mStep  = (MulState==1);
+assign mShift = (MulState==2);
 assign mStart = writecmdposedge&datain==4;
 
 always @(posedge clk)
    begin
-      MulState <= (mWait&~mStart) 		  			? 2'b00 
-								: (mWait&mStart) 			? 2'b01 
-								: (mStep&~mDone) 			? 2'b01 
-								: (mStep&mDone&~mRneed) ? 2'b00 
-								: (mStep&mDone&mRneed) 	? 2'b10 
-								: mShift 					? 2'b00 
+      MulState <= (mWait&~mStart) 		  			? 0 
+								: (mWait&mStart) 			? 1 
+								: (mStep&~mDone) 			? 1 
+								: (mStep&mDone&~mRneed) ? 0 
+								: (mStep&mDone&mRneed) 	? 2 
+								: mShift 					? 0 
 								: MulState; 
       mS 		<= (mWait&~mStart) 		  			? 0 
 								: (mWait&mStart) 			? (X[31]^Y[31]) 
