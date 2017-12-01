@@ -132,25 +132,25 @@ always @(posedge clk)
 								: mStep 			  			? mS 
 								: mShift 		  			? mS 
 								: mS;
-      mA 		<= (mWait&~mStart) 					? 24'b0 
+      mA 		<= (mWait&~mStart) 					? 0 
 								: (mWait&mStart) 			? {1'b1,X[22:0]} 
 								: mStep 						? {1'b0,mA[23:1]} 
 								: mA;
-      mB 		<= (mWait&~mStart) 					? 24'b0 
+      mB 		<= (mWait&~mStart) 					? 0 
 								: (mWait&mStart) 			? {1'b1,Y[22:0]} 
 								: mStep 						? mB 
 								: mB;
-      mE 		<= (mWait&~mStart) 					? 10'b0 
+      mE 		<= (mWait&~mStart) 					? 0 
 								: (mWait&mStart) 			? (Y[30:23]+X[30:23]-127-24) 
 								: (mStep&~mDone) 			? (mE+1) 
 								: (mStep&mDone) 			? mE 
 								: (mShift&~Sneed) 		? mE 
 								: (mShift&Sneed) 			? (mE+1) 
 								: mE;
-      P  		<= (mWait&~mStart) 					? 25'b0 
-								: (mWait&mStart)			? 25'b0
-								: (mStep&~mDone) 			? {1'b0,P[24:1]} + {1'b0,{24{mA[0]}}&mB} 
-								: (mStep&mDone&~mRneed) ? P 
+      P  		<= (mWait&~mStart) 					? 0 
+								: (mWait&mStart)			? 0
+								: (mStep&~mDone) 			? {1'b0,P[24:1]} + {1'b0,{24{mA[0]}}&mB}  
+								: (mStep&mDone&~mRneed) ? P     
 								: (mStep&mDone&mRneed) 	? (P+1) 
 								: (mShift&~Sneed) 		? P 
 								: (mShift&Sneed) 			? {1'b0,P[24:1]} 
@@ -162,11 +162,12 @@ always @(posedge clk)
       Round   	<= (mWait&~mStart) 					? 0 
 								: mStep 						? P[0] 
 								: Round;
-      SBit     <= mWait? 0 
-								: mStep 						? SBit|Round 
+      SBit     <= (mWait&~mStart) 					? 0 
+								: (mWait&mStart)			? 0
+								: mStep 						? (SBit|Round) 
 								: SBit;
    end
-assign mDone = (A==0)&~P[24];
-assign mRneed = Round&SBit | P[0]&Round&~SBit; 
+assign mDone = (mA==0)&~P[24];
+assign mRneed = Round&SBit | (P[0]&Round&~SBit); 
 assign Sneed = P[24];
 endmodule
